@@ -5,17 +5,20 @@ Desc:   Theory of probability Lab 2. 2020
 """
 
 import random
-import math
-
-
-def theoretical_standard_deviation():
-    print("Theoretical standard deviation for even distribution:")
-    print(0.0)
 
 
 def theoretical_expected_value(a, b):
+
+    M_x2 = (((b)**3)/3 - ((a)**3)/3)**0.5
+    M_x = (((b) ** 2) / 2 - ((a) ** 2) / 2)**0.5
+
+    D_x = (M_x2 - M_x**2)**0.5
+
     print("Theoretical expected value for even distribution between {0} and {1}:", a, b)
-    print((a + b) / 2)
+    print(M_x)
+
+    print("Theoretical standard deviation for even distribution:")
+    print(D_x)
 
 
 def uniform(a, b):
@@ -64,7 +67,6 @@ def main():
 
     print("Count of random numbers: {0}", n)
 
-    theoretical_standard_deviation()
     theoretical_expected_value(a, b)
     experimental(a, b, n)
 
