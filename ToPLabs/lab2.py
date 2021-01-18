@@ -42,10 +42,15 @@ def experimental(a, b, n):
     for random_number in random_array:
         S = S + (random_number - mean) ** 2
 
-    S0 = (S / (n - 1)) ** 0.5
+    S_shift = (S / n) ** 0.5
 
-    print("Practical standard deviation for even distribution between {0} and {1}:", a, b)
-    print(S0)
+    S_not_shift = (S / (n - 1)) ** 0.5
+
+    print("Practical not shifted standard deviation for even distribution between {0} and {1}:", a, b)
+    print(S_not_shift)
+
+    print("Practical shifted standard deviation for even distribution between {0} and {1}:", a, b)
+    print(S_shift)
 
 
 def main():
@@ -62,5 +67,6 @@ def main():
     theoretical_standard_deviation()
     theoretical_expected_value(a, b)
     experimental(a, b, n)
+
 
 main()
