@@ -7,53 +7,66 @@ Desc:   Theory of probability Lab 2. 2020
 import random
 
 
-def theoretical_expected_value(a, b):
+def theoretical_expected_value(a, b, c, h2_div_h1):
 
-    M_x2 = (((b)**3)/3 - ((a)**3)/3)**0.5
-    M_x = (((b) ** 2) / 2 - ((a) ** 2) / 2)**0.5
+    h1 = 1 / ((b - a) + (c - b) * h2_div_h1)
+    h2 = h2_div_h1 / ((b - a) + (c - b) * h2_div_h1)
 
-    D_x = (M_x2 - M_x**2)**0.5
+    M_x = (h1 / 2) * (b**2 - a**2) + (h2 / 2) * (c**2 - b**2)
 
-    print("Theoretical expected value for even distribution between {0} and {1}:", a, b)
+    D_x = (h1 / 3) * (b**3 - a**3) + (h2 / 3) * (c**3 - b**3) - M_x ** 2
+
+    Q = D_x ** 0.5
+
+    print("Theoretical expected value:")
     print(M_x)
 
-    print("Theoretical standard deviation for even distribution:")
+    print("Theoretical dispersion:")
     print(D_x)
 
+    print("Theoretical standard deviation:")
+    print(Q)
 
-def uniform(a, b):
-    return a + random.random() * (b - a)
 
-
-def experimental(a, b, n):
-    random_array = []
-    for i in range(0, n):
-        random_array.append(uniform(a, b))
-
+def experimental(uniform2_random_array):
     sum_total = 0
 
-    for random_number in random_array:
+    n = len(uniform2_random_array)
+
+    for random_number in uniform2_random_array:
         sum_total = sum_total + random_number
 
     mean = sum_total / n
 
-    print("Practical expected value for even distribution between {0} and {1}:", a, b)
-    print(mean)
+    print("Experimental expected value = {0}".format(mean))
 
     S = 0
 
-    for random_number in random_array:
+    for random_number in uniform2_random_array:
         S = S + (random_number - mean) ** 2
-
-    S_shift = (S / n) ** 0.5
 
     S_not_shift = (S / (n - 1)) ** 0.5
 
-    print("Practical not shifted standard deviation for even distribution between {0} and {1}:", a, b)
-    print(S_not_shift)
+    print("Experimental standard deviation  = {0}".format(S_not_shift))
 
-    print("Practical shifted standard deviation for even distribution between {0} and {1}:", a, b)
-    print(S_shift)
+
+def generate_uniform2_random(random_array, a, b, c, h2_div_h1):
+    uniform2_random_array = []
+
+    for r in random_array:
+        Rj = ((r * ((b - a) + h2_div_h1 * (c - b)) - b + a) / h2_div_h1) + b
+
+        uniform2_random_array.append(Rj)
+
+    return uniform2_random_array
+
+
+def generate_input_random(n):
+    random_array = []
+    for i in range(0, n):
+        random_array.append(random.random())
+
+    return random_array
 
 
 def main():
@@ -61,14 +74,19 @@ def main():
     Variant 10.
     """
 
-    a = 10
-    b = 20
-    n = 5000
+    a = 10.0
+    b = 20.0
+    c = 50.0
+    h2_div_h1 = 2
+    n = 50000
 
-    print("Count of random numbers: {0}", n)
+    uniform2_random_array = generate_uniform2_random(generate_input_random(n), a, b, c, h2_div_h1)
 
-    theoretical_expected_value(a, b)
-    experimental(a, b, n)
+    print("Count of random numbers: {0}".format(n))
+    print("Parameters of uniform double level sequence: a = {0}, b = {1}, c = {2}, h2_div_h1 = {3}".format(a, b, c, h2_div_h1))
+
+    theoretical_expected_value(a, b, c, h2_div_h1)
+    experimental(uniform2_random_array)
 
 
 main()
